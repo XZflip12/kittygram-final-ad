@@ -7,4 +7,6 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt --no-cache-dir
 COPY . .
 
-CMD ["gunicorn", "--bind", "0.0.0:8000", "backend.wsgi"]
+RUN python manage.py collectstatic --no-input
+
+CMD ["sh", "-c", "python manage.py collectstatic --no-input && gunicorn --bind 0.0.0.0:8000 kittygram_backend.wsgi:application"]
